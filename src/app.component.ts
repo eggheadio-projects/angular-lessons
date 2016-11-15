@@ -1,18 +1,28 @@
-import { Component, Directive, HostBinding } from '@angular/core'
+import { Component, Directive, HostBinding, Input } from '@angular/core'
 
 @Directive({
     selector: '[first]'
 })
 export class FirstDirective{
-    @HostBinding() innerText = `I'm a directive!`
+    @Input() first
+    @HostBinding() get innerText(){
+        return this.first
+    }
+}
+
+@Component({
+    selector: 'basic',
+    template: `<div></div>`
+})
+export class BasicComponent{
 }
 
 @Component({
     selector: 'app',
     template: `
-<h1 first>Hello, Angular</h1>
-<h2>No first here</h2>
-<h3 first>This will be gone</h3>
-    `
+<basic [first]="'Something'"></basic>
+<basic [first]="'Another'"></basic>
+<basic [first]="'Third'"></basic>
+`
 })
 export class AppComponent{}
