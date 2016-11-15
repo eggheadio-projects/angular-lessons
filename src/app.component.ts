@@ -1,32 +1,18 @@
-import { Component } from '@angular/core'
+import { Component, Directive, HostBinding } from '@angular/core'
+
+@Directive({
+    selector: '[first]'
+})
+export class FirstDirective{
+    @HostBinding() innerText = `I'm a directive!`
+}
 
 @Component({
     selector: 'app',
     template: `
-<template #foo let-whatever="message">
-<h1>{{whatever}}</h1>
-</template>
-
-<div 
-    [ngTemplateOutlet]="foo"
-    [ngOutletContext]="one"
-    >    
-</div>
-<div 
-    [ngTemplateOutlet]="foo"
-    [ngOutletContext]="two"
-    >    
-</div>
-<div 
-    [ngTemplateOutlet]="foo"
-    [ngOutletContext]="three"
-    >    
-</div>
+<h1 first>Hello, Angular</h1>
+<h2>No first here</h2>
+<h3 first>This will be gone</h3>
     `
 })
-export class AppComponent {
-    one = {message:'Hello One'}
-    two = {message:'Hello Two'}
-    three = {message:'Hello Three'}
-
-}
+export class AppComponent{}

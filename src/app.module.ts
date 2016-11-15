@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent } from './app.component'
+import { AppComponent, FirstDirective } from './app.component'
 
 const imports = [BrowserModule]
 const bootstrap = [AppComponent]
 const declarations = [
-    AppComponent
+    AppComponent,
+    FirstDirective
 ]
 
 @NgModule({
