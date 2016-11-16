@@ -1,33 +1,36 @@
-import { Component, Directive, HostBinding, Input, HostListener } from '@angular/core'
+import { Component, Directive, ViewChild, ViewContainerRef } from '@angular/core'
 
 @Directive({
     selector: '[first]'
 })
-export class FirstDirective{
-    @Input() first
-    @HostBinding() get innerText(){
-        return this.first
-    }
+export class FirstDirective {
 
-    @HostListener('click', ['$event'])
-    onClick($event){
-        this.first = 'clicked'
-    }
 }
 
 @Component({
     selector: 'basic',
-    template: `<div></div>`
+    template: `
+<template #foo>
+This is content inside a template
+</template>
+`
 })
 export class BasicComponent{
+    @ViewChild('foo') template
+
+    constructor(private view:ViewContainerRef){}
+
+    ngAfterContentInit(){
+        this.view.createEmbeddedView(this.template)
+        this.view.createEmbeddedView(this.template)
+        this.view.createEmbeddedView(this.template)
+    }
 }
 
 @Component({
     selector: 'app',
     template: `
-<basic [first]="'Something'"></basic>
-<basic [first]="'Another'"></basic>
-<basic [first]="'Third'"></basic>
+<basic></basic>
 `
 })
 export class AppComponent{}
