@@ -1,4 +1,30 @@
-import { Component, Directive, Input, HostListener, Injectable } from '@angular/core'
+import { Component, Directive, Input, HostListener, Injectable, HostBinding } from '@angular/core'
+
+@Injectable()
+export class OnlineService{
+    online = true
+    constructor(){
+        setInterval(()=>{
+            this.online = Math.random() > .5
+        }, 1000)
+    }
+}
+
+@Directive({
+    selector:'[online]'
+})
+export class OnlineDirective{
+    @HostBinding('disabled') get disabled(){
+        return this.online.online
+    }
+
+    @HostBinding('class.offline') get offline(){
+        return this.online.online
+    }
+
+    constructor(private online:OnlineService){}
+}
+
 
 @Injectable()
 export class TrackingService{
@@ -30,9 +56,9 @@ export class TrackDirective{
 @Component({
     selector: 'app',
     template: `
-<button [track]="'One Button'">One</button>
-<button [track]="'Two Button'">Two</button>
-<button [track]="'Three Button'">Three</button>
+<button online [track]="'One Button'">One</button>
+<button online [track]="'Two Button'">Two</button>
+<button online [track]="'Three Button'">Three</button>
     
     <!-- Only for visuals-->
 <div *ngFor="let log of tracking.logs">

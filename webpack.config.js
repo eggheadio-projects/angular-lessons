@@ -11,6 +11,7 @@ const config = {
     entry: {
         'app': [
             'tachyons/css/tachyons.min.css',
+            './styles.css',
             'core-js/es7/reflect',
             'zone.js/dist/zone',
             './src/main.ts'
