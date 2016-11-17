@@ -32,8 +32,10 @@
     "@ngrx/effects": "^2.0.0",
     "@ngrx/store": "^2.2.1",
     "@ngrx/store-devtools": "^3.2.2",
+    "@types/chai": "^3.4.34",
+    "chai": "^3.5.0",
     "core-js": "^2.4.1",
-    "rxjs": "^5.0.0-rc.2",
+    "rxjs": "^5.0.0-rc.3",
     "tachyons": "^4.5.5",
     "zone.js": "^0.6.26"
   }

@@ -1,72 +1,55 @@
-import { Component, Directive, Input, HostListener, Injectable, HostBinding } from '@angular/core'
+import { Component, Injectable, ViewChild, Directive, ViewContainerRef, TemplateRef } from '@angular/core'
 
 @Injectable()
-export class OnlineService{
-    online = true
-    constructor(){
-        setInterval(()=>{
-            this.online = Math.random() > .5
-        }, 1000)
+export class TemplateService{
+    templates = new Map<string, TemplateRef<any>>()
+}
+
+@Component({
+    selector:'template-storage',
+    template:`
+<template #header><h1>I'm a header</h1></template>
+<template #footer><h2>I'm a footer</h2></template>
+`
+})
+export class TemplateStorage{
+    @ViewChild('header') headerTemplate
+    @ViewChild('footer') footerTemplate
+
+    constructor(private service:TemplateService){}
+
+    ngAfterViewInit(){
+        this.service.templates.set('header', this.headerTemplate)
+        this.service.templates.set('footer', this.footerTemplate)
     }
 }
 
 @Directive({
-    selector:'[online]'
+    selector:'[surround]'
 })
-export class OnlineDirective{
-    @HostBinding('disabled') get disabled(){
-        return this.online.online
+export class SurroundDirective{
+    constructor(
+        private service:TemplateService,
+        private view:ViewContainerRef,
+        private template:TemplateRef<any>
+    ){}
+
+    ngAfterViewInit(){
+        this.view.createEmbeddedView(this.service.templates.get('header'))
+        this.view.createEmbeddedView(this.template)
+        this.view.createEmbeddedView(this.service.templates.get('footer'))
     }
-
-    @HostBinding('class.offline') get offline(){
-        return this.online.online
-    }
-
-    constructor(private online:OnlineService){}
-}
-
-
-@Injectable()
-export class TrackingService{
-    logs = []
-    log(trackingEvent){
-        this.logs.push(trackingEvent)
-        console.log(this.logs)
-    }
-}
-
-@Directive({
-    selector: '[track]'
-})
-export class TrackDirective{
-    @Input() track
-
-    @HostListener('click')
-    onClick(){
-        this.tracking.log({event:'click', message:this.track})
-    }
-    @HostListener('mouseover')
-    onMouseover(){
-        this.tracking.log({event:'mouseover', message:this.track})
-    }
-
-    constructor(private tracking:TrackingService){}
 }
 
 @Component({
     selector: 'app',
     template: `
-<button online [track]="'One Button'">One</button>
-<button online [track]="'Two Button'">Two</button>
-<button online [track]="'Three Button'">Three</button>
-    
-    <!-- Only for visuals-->
-<div *ngFor="let log of tracking.logs">
-{{log.event}} - {{log.message}}
-</div>    
+<template-storage></template-storage>
+
+<button>One</button>
+<button *surround>Two</button>
+<button>Three</button>    
 `
 })
 export class AppComponent{
-    //only for visuals
-    constructor(private tracking:TrackingService){}
 }
