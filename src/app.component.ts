@@ -1,52 +1,38 @@
-import { Component, Directive, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core'
+import { Component, Directive, Input, HostListener, Injectable } from '@angular/core'
+
+@Injectable()
+export class TrackingService{
+    logs = []
+    log(trackingEvent){
+        this.logs.push(trackingEvent)
+        console.log(this.logs)
+    }
+}
 
 @Directive({
-    selector: '[three]'
+    selector: '[track]'
 })
-export class ThreeDirective{
-    @Input() set threeFrom({one, two, three}){
-        this.view.clear()
+export class TrackDirective{
+    @Input() track
 
-        this.view.createEmbeddedView(this.template, {
-            $implicit:one
-        })
-        this.view.createEmbeddedView(this.template, {
-            $implicit:two
-        })
-        this.view.createEmbeddedView(this.template, {
-            $implicit:three
-        })
+    @HostListener('click')
+    onClick(){
+        this.tracking.log({event:'click', message:this.track})
+    }
+    @HostListener('mouseover')
+    onMouseover(){
+        this.tracking.log({event:'mouseover', message:this.track})
     }
 
-    constructor(
-        el:ElementRef,
-        private view:ViewContainerRef,
-        private template:TemplateRef<any>
-    ){
-        console.log(el.nativeElement)
-    }
+    constructor(private tracking:TrackingService){}
 }
 
 @Component({
     selector: 'app',
     template: `
-<h1 *three="let message from messages">{{message}}</h1>    
+<button [track]="'One Button'">One</button>
+<button [track]="'Two Button'">Two</button>
+<button [track]="'Three Button'">Three</button>    
 `
 })
-export class AppComponent{
-    messages = {
-        one: 'One is awesome',
-        two: 'Two is better',
-        three: 'Three is best!'
-    }
-
-    constructor(){
-        setInterval(()=>{
-            this.messages = {
-                one: 'One' + Math.random().toString().slice(0,3),
-                two: 'Two' + Math.random().toString().slice(0,3),
-                three: 'Three' + Math.random().toString().slice(0,3)
-            }
-        }, 1000)
-    }
-}
+export class AppComponent{}

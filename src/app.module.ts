@@ -1,17 +1,22 @@
-import { NgModule } from '@angular/core'
+import { NgModule,  } from '@angular/core'
+import {  } from '@angular/common'
 import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent, ThreeDirective } from './app.component'
+import { AppComponent, TrackDirective, TrackingService } from './app.component'
 
 const imports = [BrowserModule]
 const bootstrap = [AppComponent]
 const declarations = [
     AppComponent,
-    ThreeDirective
+    TrackDirective
+]
+const providers = [
+    TrackingService
 ]
 
 @NgModule({
     imports,
     declarations,
-    bootstrap
+    bootstrap,
+    providers
 })
 export class AppModule {}
