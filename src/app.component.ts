@@ -1,9 +1,21 @@
-import { Component, Directive, ElementRef, ViewContainerRef, TemplateRef } from '@angular/core'
+import { Component, Directive, ElementRef, ViewContainerRef, TemplateRef, Input } from '@angular/core'
 
 @Directive({
     selector: '[three]'
 })
 export class ThreeDirective{
+    @Input() set three(value){
+        this.view.createEmbeddedView(this.template, {
+            $implicit:'Awesome'
+        })
+        this.view.createEmbeddedView(this.template, {
+            $implicit:'Amazing'
+        })
+        this.view.createEmbeddedView(this.template, {
+            $implicit:'Sweet'
+        })
+    }
+
     constructor(
         el:ElementRef,
         private view:ViewContainerRef,
@@ -11,18 +23,12 @@ export class ThreeDirective{
     ){
         console.log(el.nativeElement)
     }
-
-    ngAfterViewInit(){
-        this.view.createEmbeddedView(this.template)
-        this.view.createEmbeddedView(this.template)
-        this.view.createEmbeddedView(this.template)
-    }
 }
 
 @Component({
     selector: 'app',
     template: `
-<h1 *three>Hello, Angular</h1>    
+<h1 *three="let message">{{message}}</h1>    
 `
 })
 export class AppComponent{}
