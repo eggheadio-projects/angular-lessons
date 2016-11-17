@@ -32,7 +32,15 @@ export class TrackDirective{
     template: `
 <button [track]="'One Button'">One</button>
 <button [track]="'Two Button'">Two</button>
-<button [track]="'Three Button'">Three</button>    
+<button [track]="'Three Button'">Three</button>
+    
+    <!-- Only for visuals-->
+<div *ngFor="let log of tracking.logs">
+{{log.event}} - {{log.message}}
+</div>    
 `
 })
-export class AppComponent{}
+export class AppComponent{
+    //only for visuals
+    constructor(private tracking:TrackingService){}
+}
