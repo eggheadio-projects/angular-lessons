@@ -4,15 +4,17 @@ import { Component, Directive, ElementRef, ViewContainerRef, TemplateRef, Input 
     selector: '[three]'
 })
 export class ThreeDirective{
-    @Input() set three(value){
+    @Input() set threeFrom({one, two, three}){
+        this.view.clear()
+
         this.view.createEmbeddedView(this.template, {
-            $implicit:'Awesome'
+            $implicit:one
         })
         this.view.createEmbeddedView(this.template, {
-            $implicit:'Amazing'
+            $implicit:two
         })
         this.view.createEmbeddedView(this.template, {
-            $implicit:'Sweet'
+            $implicit:three
         })
     }
 
@@ -28,7 +30,23 @@ export class ThreeDirective{
 @Component({
     selector: 'app',
     template: `
-<h1 *three="let message">{{message}}</h1>    
+<h1 *three="let message from messages">{{message}}</h1>    
 `
 })
-export class AppComponent{}
+export class AppComponent{
+    messages = {
+        one: 'One is awesome',
+        two: 'Two is better',
+        three: 'Three is best!'
+    }
+
+    constructor(){
+        setInterval(()=>{
+            this.messages = {
+                one: 'One' + Math.random().toString().slice(0,3),
+                two: 'Two' + Math.random().toString().slice(0,3),
+                three: 'Three' + Math.random().toString().slice(0,3)
+            }
+        }, 1000)
+    }
+}
