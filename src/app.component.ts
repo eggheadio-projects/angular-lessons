@@ -1,33 +1,28 @@
-import { Component, Directive, HostBinding, Input, HostListener } from '@angular/core'
+import { Component, Directive, ElementRef, ViewContainerRef, TemplateRef } from '@angular/core'
 
 @Directive({
-    selector: '[first]'
+    selector: '[three]'
 })
-export class FirstDirective{
-    @Input() first
-    @HostBinding() get innerText(){
-        return this.first
+export class ThreeDirective{
+    constructor(
+        el:ElementRef,
+        private view:ViewContainerRef,
+        private template:TemplateRef<any>
+    ){
+        console.log(el.nativeElement)
     }
 
-    @HostListener('click', ['$event'])
-    onClick($event){
-        this.first = 'clicked'
+    ngAfterViewInit(){
+        this.view.createEmbeddedView(this.template)
+        this.view.createEmbeddedView(this.template)
+        this.view.createEmbeddedView(this.template)
     }
-}
-
-@Component({
-    selector: 'basic',
-    template: `<div></div>`
-})
-export class BasicComponent{
 }
 
 @Component({
     selector: 'app',
     template: `
-<basic [first]="'Something'"></basic>
-<basic [first]="'Another'"></basic>
-<basic [first]="'Third'"></basic>
+<h1 *three>Hello, Angular</h1>    
 `
 })
 export class AppComponent{}
