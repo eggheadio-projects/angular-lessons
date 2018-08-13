@@ -3,30 +3,30 @@ import { Component } from '@angular/core'
 @Component({
     selector: 'app',
     template: `
-<template #foo let-whatever="message">
+<ng-template #foo let-whatever="message">
 <h1>{{whatever}}</h1>
-</template>
+</ng-template>
 
 <div 
     [ngTemplateOutlet]="foo"
-    [ngOutletContext]="one"
+    [ngTemplateOutletContext]="one"
     >    
 </div>
 <div 
     [ngTemplateOutlet]="foo"
-    [ngOutletContext]="two"
+    [ngTemplateOutletContext]="two"
     >    
 </div>
 <div 
     [ngTemplateOutlet]="foo"
-    [ngOutletContext]="three"
+    [ngTemplateOutletContext]="three"
     >    
 </div>
     `
 })
 export class AppComponent {
-    one = {message:'Hello One'}
-    two = {message:'Hello Two'}
-    three = {message:'Hello Three'}
+    one = { message: 'Hello One' }
+    two = { message: 'Hello Two' }
+    three = { message: 'Hello Three' }
 
 }
