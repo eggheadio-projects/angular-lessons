@@ -11,7 +11,7 @@ export class FirstDirective{
 
     @HostListener('click', ['$event'])
     onClick($event){
-        this.first = 'clicked'
+        this.first = 'clicked '
     }
 }
 
@@ -25,8 +25,8 @@ export class BasicComponent{
 @Component({
     selector: 'app',
     template: `
-<basic [first]="'Something'"></basic>
-<basic [first]="'Another'"></basic>
+<basic [first]="'Something '"></basic>
+<basic [first]="'Another '"></basic>
 <basic [first]="'Third'"></basic>
 `
 })
