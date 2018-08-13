@@ -1,40 +1,40 @@
 import { Component, Injectable, ViewChild, Directive, ViewContainerRef, TemplateRef } from '@angular/core'
 
 @Injectable()
-export class TemplateService{
+export class TemplateService {
     templates = new Map<string, TemplateRef<any>>()
 }
 
 @Component({
-    selector:'template-storage',
-    template:`
-<template #header><h1>I'm a header</h1></template>
-<template #footer><h2>I'm a footer</h2></template>
+    selector: 'template-storage',
+    template: `
+<ng-template #header><h1>I'm a header</h1></ng-template>
+<ng-template #footer><h2>I'm a footer</h2></ng-template>
 `
 })
-export class TemplateStorage{
+export class TemplateStorage {
     @ViewChild('header') headerTemplate
     @ViewChild('footer') footerTemplate
 
-    constructor(private service:TemplateService){}
+    constructor(private service: TemplateService) { }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.service.templates.set('header', this.headerTemplate)
         this.service.templates.set('footer', this.footerTemplate)
     }
 }
 
 @Directive({
-    selector:'[surround]'
+    selector: '[surround]'
 })
-export class SurroundDirective{
+export class SurroundDirective {
     constructor(
-        private service:TemplateService,
-        private view:ViewContainerRef,
-        private template:TemplateRef<any>
-    ){}
+        private service: TemplateService,
+        private view: ViewContainerRef,
+        private template: TemplateRef<any>
+    ) { }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.view.createEmbeddedView(this.service.templates.get('header'))
         this.view.createEmbeddedView(this.template)
         this.view.createEmbeddedView(this.service.templates.get('footer'))
@@ -51,5 +51,5 @@ export class SurroundDirective{
 <button>Three</button>    
 `
 })
-export class AppComponent{
+export class AppComponent {
 }
