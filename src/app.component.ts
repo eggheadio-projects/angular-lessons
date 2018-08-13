@@ -1,4 +1,9 @@
-import { Component, Directive, ViewChild, ViewContainerRef } from '@angular/core'
+import {
+    Component,
+    Directive,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core'
 
 @Directive({
     selector: '[first]'
@@ -10,17 +15,17 @@ export class FirstDirective {
 @Component({
     selector: 'basic',
     template: `
-<template #foo>
+<ng-template #foo>
 This is content inside a template
-</template>
+</ng-template>
 `
 })
-export class BasicComponent{
+export class BasicComponent {
     @ViewChild('foo') template
 
-    constructor(private view:ViewContainerRef){}
+    constructor(private view: ViewContainerRef) { }
 
-    ngAfterContentInit(){
+    ngAfterContentInit() {
         this.view.createEmbeddedView(this.template)
         this.view.createEmbeddedView(this.template)
         this.view.createEmbeddedView(this.template)
@@ -33,4 +38,4 @@ export class BasicComponent{
 <basic></basic>
 `
 })
-export class AppComponent{}
+export class AppComponent { }
